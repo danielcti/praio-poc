@@ -1,0 +1,14 @@
+{
+  "name": "praiou-back",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http": "^0.0.1-security",
+    "pg": "^8.7.1",
+    "socket.io": "^4.3.2"
+  }
+}
