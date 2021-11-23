@@ -19,7 +19,7 @@ yarn start
 
 ```
 cd backend
-npm install
-node src/index.js
+yarn
+yarn dev
 ```
 
