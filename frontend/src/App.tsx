@@ -20,14 +20,15 @@ function App() {
   });
   const [myUser, setMyUser] = useState<User | undefined>(undefined);
 
+  // create socket connection and hears for "users" event
   const registerSocket = () => {
     const socket = io("http://localhost:3333", { transports: ["websocket"] });
-
     socket.on("users", (users) => {
       setUsers(users);
     });
   };
 
+  // add user to database
   const addUser = async () => {
     const response = await axios.post<User>("http://localhost:3333/user", {
       name,
@@ -38,14 +39,20 @@ function App() {
     localStorage.setItem("user", JSON.stringify(response.data));
   };
 
+  // call registerSocket function when the page is mounted
   useEffect(() => {
     registerSocket();
+  }, []);
+
+  // gets the user from local storage when the page is mounted
+  useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
       setMyUser(JSON.parse(user));
     }
   }, []);
 
+  // fetch the users from database when the page is mounted
   useEffect(() => {
     async function fetchUsers() {
       const { data } = await axios.get<User[]>("http://localhost:3333/user");
@@ -54,6 +61,7 @@ function App() {
     fetchUsers();
   }, []);
 
+  // update the location state when the navigator.geolocation updates
   useEffect(() => {
     if ("geolocation" in navigator) {
       console.log("Available");
@@ -69,10 +77,11 @@ function App() {
     });
   }, [navigator.geolocation]);
 
+  // update the user location to database when the location state changes
   useEffect(() => {
     async function updateUser() {
       if (myUser) {
-        const response = await axios.post<User>("http://localhost:3333/user", {
+        const response = await axios.put<User>("http://localhost:3333/user", {
           id: myUser?.id,
           name: myUser?.name,
           latitude: location.latitude,
