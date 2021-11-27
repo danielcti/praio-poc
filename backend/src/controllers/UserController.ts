@@ -48,6 +48,15 @@ class UserController {
 
     return response.json(users.rows);
   }
+
+  async delete(request: Request, response: Response) {
+    const { id } = request.params;
+    if (!id) return response.status(400).json({ error: "Invalid fields" });
+
+    await client.query(`DELETE FROM users WHERE user_id = ${id};`);
+
+    return response.status(204).send();
+  }
 }
 
 export default new UserController();

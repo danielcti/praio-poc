@@ -12,7 +12,7 @@ const io = new Server(httpServer);
 
 const client = new Pool({
   connectionString:
-    "postgres://ojfgmrsznqppqz:1b99ebe07f84dae213c8d02551df3bc98726d80859039c4848a8e10783e6e1b1@ec2-52-72-155-37.compute-1.amazonaws.com:5432/de3jsthf82fvlj",
+    "postgres://pvkwuabszilmwb:6f5305bed79afe92966f76567bed338b3c1d36bf3bdbeee2aa244b6cfdda2ade@ec2-52-71-217-158.compute-1.amazonaws.com:5432/dast7u5c37f243",
   ssl: {
     rejectUnauthorized: false,
   },
