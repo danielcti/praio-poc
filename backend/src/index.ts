@@ -25,5 +25,6 @@ app.use(cors());
 app.use(routes);
 
 httpServer.listen(3333);
+console.log("App is listen on port 3333");
 
 export { client, io };
