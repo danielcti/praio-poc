@@ -65,6 +65,7 @@ class UserRepository {
                 await client.query(`INSERT INTO USERS(name,email,password,is_client,is_merchant)\
                 VALUES('${user.name}','${user.email}','${user.password}','f','t')`)
             }
+            return true;
         } catch(err) {
             console.log((err as Error).message)
             console.log((err as Error).stack)

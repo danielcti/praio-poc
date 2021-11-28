@@ -22,7 +22,7 @@ class AccountController {
         }
 
         if (await UserRepository.RegisterUser(user)) {
-            return response.status(200).send({ success: "User was registered" });
+            return response.status(200).send({ success: "User was registered", user: user });
         }
         else {
             return response.status(500).send({ error: "Something went wrong" });
@@ -49,7 +49,7 @@ class AccountController {
         //TODO: PROCESS ENV
         const token = jwt.sign({ id: user.id, is_client: user.is_client }, "SEGREDOMUITOSECRETO");
 
-        return response.status(200).send({ auth: true, token: token });
+        return response.status(200).send({ auth: true, token: token, user: user });
     }
 
     async testLogin(request: Request, response: Response) {
