@@ -9,7 +9,7 @@ class AccountController {
     async register(request: Request, response: Response) {
         const user: User = request.body;
 
-        if (user.name === undefined || user.email === undefined || user.password === undefined) {
+        if (!user.name|| !user.email || !user.password) {
             return response.status(400).send({ error: "Request was incomplete" });
         }
 
@@ -17,7 +17,9 @@ class AccountController {
             return response.status(400).send({ error: "Request was incomplete" });
         }
 
-        if (await UserRepository.FindUserByEmail(user.email) !== undefined) {
+        const userWithSameEmail = await UserRepository.FindUserByEmail(user.email)
+
+        if (userWithSameEmail) {
             return response.status(400).send({ error: "Email already registered" });
         }
 
@@ -30,16 +32,15 @@ class AccountController {
     }
 
     async login(request: Request, response: Response) {
-        const email = request.body.email;
-        const password = request.body.password;
+        const { email, password } = request.body;
 
-        if (email === undefined || password === undefined) {
+        if (!email|| !password) {
             return response.status(400).send({ error: 'Request was incomplete' });
         }
 
         const user = await UserRepository.FindUserByEmail(email);
 
-        if (user === undefined) return response.status(401).send({ error: 'Invalid login' })
+        if (!user) return response.status(401).send({ error: 'Invalid login' })
 
         //the app is just a mvp so security is not that important XD 
         if (password != user.password) {
