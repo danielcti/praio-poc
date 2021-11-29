@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 const ProfileRoutes = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Perfil" component={Profile} />
+      <Stack.Screen name="Perfil Página" component={Profile} />
     </Stack.Navigator>
   );
 };
