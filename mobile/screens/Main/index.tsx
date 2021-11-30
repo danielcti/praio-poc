@@ -5,7 +5,6 @@ export default function Main() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Principal</Text>
-      <View style={styles.separator} />
     </View>
   );
 }
@@ -19,10 +18,5 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
   },
 });

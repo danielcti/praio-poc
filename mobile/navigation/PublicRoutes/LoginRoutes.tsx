@@ -16,8 +16,16 @@ const LoginRoutes = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="SignIn"
+          component={SignIn}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="SignUp"
+          component={SignUp}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

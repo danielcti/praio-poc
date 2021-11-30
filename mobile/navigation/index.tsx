@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useApplication } from "../hooks/application";
 
 import PrivateRoutes from "./PrivateRoutes";
 import PublicRoutes from "./PublicRoutes/LoginRoutes";
 
 const Routes: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { userSession } = useApplication();
 
-  return isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />;
+  return userSession?.auth ? <PrivateRoutes /> : <PublicRoutes />;
 };
 
 export default Routes;

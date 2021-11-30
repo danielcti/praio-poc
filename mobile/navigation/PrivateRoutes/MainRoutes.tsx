@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 const MainRoutes = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Principal" component={Main} />
+      <Stack.Screen name="Principal Página" component={Main} />
     </Stack.Navigator>
   );
 };

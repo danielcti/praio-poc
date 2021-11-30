@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 const OrdersRoutes = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Pedidos" component={Orders} />
+      <Stack.Screen name="Pedidos Página" component={Orders} />
     </Stack.Navigator>
   );
 };
