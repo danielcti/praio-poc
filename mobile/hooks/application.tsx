@@ -60,7 +60,7 @@ const ApplicationProvider = ({ children }: any) => {
       await createUserMutation.mutateAsync({
         name,
         email: createUserEmail,
-        password: createUserEmail,
+        password: createUserPassword,
         is_client,
         is_merchant,
       });

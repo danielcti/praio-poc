@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -37,6 +38,8 @@ export default function SignUp() {
   const handleSubmit = async () => {
     try {
       await createUserFormik.submitForm();
+      ToastAndroid.show("Conta criada com sucesso!", ToastAndroid.LONG);
+      navigation.navigate("SignIn");
     } catch (err) {
       Alert.alert("Houve algum erro.");
     }
