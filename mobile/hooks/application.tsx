@@ -41,10 +41,13 @@ const ApplicationProvider = ({ children }: any) => {
 
   const createUserValidationSchema = yup.object({
     name: yup.string().required("O nome é obrigatório"),
-    email: yup.string().email().required("O email é obrigatório"),
+    email: yup
+      .string()
+      .email("Digite um email válido")
+      .required("O email é obrigatório"),
     password: yup.string().required("A senha é obrigatória"),
-    is_client: yup.boolean().notRequired(),
-    is_merchant: yup.boolean().notRequired(),
+    is_client: yup.boolean(),
+    is_merchant: yup.boolean(),
   });
 
   const createUserFormik = useFormik({
@@ -90,7 +93,10 @@ const ApplicationProvider = ({ children }: any) => {
   });
 
   const loginUserValidationSchema = yup.object({
-    email: yup.string().email().required("O email é obrigatório"),
+    email: yup
+      .string()
+      .email("Digite um email válido")
+      .required("O email é obrigatório"),
     password: yup.string().required("A senha é obrigatória"),
   });
 
