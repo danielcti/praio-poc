@@ -126,6 +126,7 @@ export default function SignUp() {
             <TouchableOpacity
               style={styles.loginButton}
               onPress={() => handleSubmit()}
+              disabled={!createUserFormik.dirty}
             >
               <Text style={styles.loginButtonText}>Criar conta</Text>
             </TouchableOpacity>

@@ -71,7 +71,11 @@ export default function SignIn() {
                 {loginUserFormik.errors.password}
               </Text>
             </View>
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={handleLogin}
+              disabled={!loginUserFormik.dirty}
+            >
               <Text style={styles.loginButtonText}>Acessar</Text>
             </TouchableOpacity>
             <View style={styles.createAccountContainer}>
