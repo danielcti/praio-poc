@@ -5,9 +5,9 @@ import PrivateRoutes from "./PrivateRoutes";
 import PublicRoutes from "./PublicRoutes/LoginRoutes";
 
 const Routes: React.FC = () => {
-  const { isLogged } = useApplication();
+  const { userSession } = useApplication();
 
-  return isLogged ? <PrivateRoutes /> : <PublicRoutes />;
+  return userSession?.auth ? <PrivateRoutes /> : <PublicRoutes />;
 };
 
 export default Routes;
