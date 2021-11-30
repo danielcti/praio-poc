@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigation } from "@react-navigation/core";
 import { Link } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
-  Alert,
   Image,
   SafeAreaView,
   ScrollView,
@@ -36,12 +35,15 @@ export default function SignUp() {
   };
 
   const handleSubmit = async () => {
+    if (!createUserFormik.isValid) {
+      return ToastAndroid.show("Algum campo inválido.", ToastAndroid.LONG);
+    }
     try {
       await createUserFormik.submitForm();
       ToastAndroid.show("Conta criada com sucesso!", ToastAndroid.LONG);
       navigation.navigate("SignIn");
     } catch (err) {
-      Alert.alert("Houve algum erro.");
+      ToastAndroid.show("Houve algum erro.", ToastAndroid.LONG);
     }
   };
 
@@ -63,6 +65,9 @@ export default function SignUp() {
                 onChangeText={createUserFormik.handleChange("name")}
                 autoCorrect={false}
               />
+              <Text style={styles.errorText}>
+                {createUserFormik.errors.name}
+              </Text>
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Email</Text>
@@ -74,6 +79,9 @@ export default function SignUp() {
                 autoCorrect={false}
                 keyboardType="email-address"
               />
+              <Text style={styles.errorText}>
+                {createUserFormik.errors.email}
+              </Text>
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Senha</Text>
@@ -85,6 +93,9 @@ export default function SignUp() {
                 autoCorrect={false}
                 secureTextEntry
               />
+              <Text style={styles.errorText}>
+                {createUserFormik.errors.password}
+              </Text>
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Escolha seu tipo de perfil</Text>
@@ -209,5 +220,8 @@ const styles = StyleSheet.create({
     color: "#999",
     textDecorationLine: "underline",
     marginLeft: 5,
+  },
+  errorText: {
+    color: "red",
   },
 });

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Alert,
   Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -23,10 +23,13 @@ export default function SignIn() {
   const navigation = useNavigation<signInScreenProp>();
 
   const handleLogin = async () => {
+    if (!loginUserFormik.isValid) {
+      return ToastAndroid.show("Algum campo inválido.", ToastAndroid.LONG);
+    }
     try {
       await loginUserFormik.submitForm();
     } catch (err) {
-      Alert.alert("Houve algum erro.");
+      ToastAndroid.show("Houve algum erro.", ToastAndroid.LONG);
     }
   };
 
@@ -42,7 +45,6 @@ export default function SignIn() {
           <View style={styles.form}>
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Email</Text>
-
               <TextInput
                 style={styles.inputField}
                 value={loginUserFormik.values.email}
@@ -51,6 +53,9 @@ export default function SignIn() {
                 autoCorrect={false}
                 keyboardType="email-address"
               />
+              <Text style={styles.errorText}>
+                {loginUserFormik.errors.email}
+              </Text>
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Senha</Text>
@@ -62,6 +67,9 @@ export default function SignIn() {
                 autoCorrect={false}
                 secureTextEntry
               />
+              <Text style={styles.errorText}>
+                {loginUserFormik.errors.password}
+              </Text>
             </View>
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
               <Text style={styles.loginButtonText}>Acessar</Text>
@@ -135,5 +143,8 @@ const styles = StyleSheet.create({
     color: "#999",
     textDecorationLine: "underline",
     marginLeft: 5,
+  },
+  errorText: {
+    color: "red",
   },
 });
