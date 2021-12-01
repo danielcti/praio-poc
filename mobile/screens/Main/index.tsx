@@ -10,8 +10,7 @@ import { useUser } from "../../hooks/user";
 export default function Main() {
   const [location, setLocation] = React.useState<any>(undefined);
   const [inputText, setInputText] = React.useState("");
-  const { userListQuery } = useUser();
-  const { userSession } = useUser();
+  const { userSession, userListQuery } = useUser();
   const [filteredUsers, setFilteresUsers] = React.useState<User[]>([]);
 
   React.useEffect(() => {
