@@ -53,24 +53,24 @@ class OrderRepository {
         return undefined;
     }
 
-    async CreateOrder(order: Order): Promise<boolean> {
+    async CreateOrder(order: Order): Promise<Order | undefined> {
         try {
             const buyer = await UserRepository.FindUserById(order.client_id || -1)
             const merchant = await UserRepository.FindUserById(order.merchant_id|| -1)
             const food = await FoodRepository.FindFoodById(order.food_id || -1) 
 
-            if (!buyer || !merchant || !food) { return false }
+            if (!buyer || !merchant || !food) { return undefined }
 
-            await client.query(`INSERT INTO ORDERS(merchant_id,client_id,food_id,status,total_price,payment_method,time_ordered)\
-                VALUES('${order.merchant_id}','${order.client_id}','${order.food_id}','open','${(food.price || 0)*(order.quantity || 0)}','${new Date()}')`)
+            const query = await client.query(`INSERT INTO ORDERS(merchant_id,client_id,food_id,status,total_price,payment_method,time_ordered)\
+                VALUES('${order.merchant_id}','${order.client_id}','${order.food_id}','open','${(food.price || 0)*(order.quantity || 0)}','${order.payment_method}','${(new Date()).toUTCString()}') RETURNING *;`)
 
-            return true;
+            return query.rows[0];
 
         } catch(err) {
             console.log((err as Error).message)
             console.log((err as Error).stack)
         }
-        return false;
+        return undefined;
     }
 }
 
