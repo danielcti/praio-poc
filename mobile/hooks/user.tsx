@@ -8,12 +8,18 @@ import {
   LoginUserForm,
   User,
 } from "../types/User";
-import { useMutation, UseMutationResult } from "react-query";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from "react-query";
 import { AxiosError } from "axios";
+import { USER_LIST_QUERY } from "../constants/constants";
 
-interface ApplicationContextData {
+interface UserContextData {
   userSession: Authentication | undefined;
-  setUserSession: (userSession: Authentication) => void;
+  setUserSession: (userSession: Authentication | undefined) => void;
   createUserFormik: FormikProps<CreateUserForm>;
   createUserMutation: UseMutationResult<
     User,
@@ -28,13 +34,12 @@ interface ApplicationContextData {
     LoginUserForm,
     unknown
   >;
+  userListQuery: UseQueryResult<User[], AxiosError>;
 }
 
-const ApplicationContext = createContext<ApplicationContextData>(
-  {} as ApplicationContextData
-);
+const UserContext = createContext<UserContextData>({} as UserContextData);
 
-const ApplicationProvider = ({ children }: any) => {
+const UserProvider = ({ children }: any) => {
   const [userSession, setUserSession] = useState<Authentication | undefined>(
     undefined
   );
@@ -132,8 +137,23 @@ const ApplicationProvider = ({ children }: any) => {
     retry: false,
   });
 
+  const fetchUserList = async (): Promise<User[]> => {
+    const { data } = await api.get("/user");
+    return data;
+  };
+
+  const userListQuery = useQuery<User[], AxiosError>(
+    [USER_LIST_QUERY, userSession],
+    fetchUserList,
+    {
+      enabled: userSession?.auth,
+      retry: false,
+      staleTime: 10000,
+    }
+  );
+
   return (
-    <ApplicationContext.Provider
+    <UserContext.Provider
       value={{
         userSession,
         setUserSession,
@@ -141,16 +161,17 @@ const ApplicationProvider = ({ children }: any) => {
         createUserMutation,
         loginUserFormik,
         loginUserMutation,
+        userListQuery,
       }}
     >
       {children}
-    </ApplicationContext.Provider>
+    </UserContext.Provider>
   );
 };
 
-function useApplication() {
-  const context = useContext(ApplicationContext);
+function useUser() {
+  const context = useContext(UserContext);
   return context;
 }
 
-export { ApplicationProvider, useApplication };
+export { UserProvider, useUser };

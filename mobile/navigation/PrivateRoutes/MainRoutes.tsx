@@ -8,7 +8,11 @@ const Stack = createStackNavigator();
 const MainRoutes = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Principal Página" component={Main} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Principal Página"
+        component={Main}
+      />
     </Stack.Navigator>
   );
 };
