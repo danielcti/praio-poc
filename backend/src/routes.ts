@@ -2,6 +2,7 @@ import { Router } from "express";
 import UserController from "./controllers/UserController";
 import AccountController from "./controllers/AccountController";
 import FoodController from "./controllers/FoodController";
+import OrderController from "./controllers/OrderController";
 import VerifyJWT from "./middleware/authentication";
 
 const routes = Router();
@@ -13,6 +14,7 @@ routes.get("/user", UserController.index);
 routes.put("/user", UserController.update);
 routes.get("/user/:id", UserController.show);
 routes.delete("/user/:id", UserController.delete);
+routes.post("/order/create", OrderController.create);
 
 routes.get("/account/testLogin", VerifyJWT, AccountController.testLogin);
 
