@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UserController from "./controllers/UserController";
 import AccountController from "./controllers/AccountController";
+import FoodController from "./controllers/FoodController";
 import VerifyJWT from "./middleware/authentication";
 
 const routes = Router();
@@ -14,5 +15,11 @@ routes.get("/user/:id", UserController.show);
 routes.delete("/user/:id", UserController.delete);
 
 routes.get("/account/testLogin", VerifyJWT, AccountController.testLogin);
+
+routes.post("/add-food", VerifyJWT, FoodController.add);
+routes.get("/food/:id", FoodController.get);
+routes.delete("/food/:id", VerifyJWT, FoodController.delete);
+routes.get("/merchant-foods/:id", FoodController.getMerchantFoods);
+routes.put("/food", VerifyJWT ,FoodController.update);
 
 export default routes;
