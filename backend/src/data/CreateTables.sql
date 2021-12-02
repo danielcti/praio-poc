@@ -45,6 +45,7 @@ CREATE TABLE Orders (
     time_ordered TIMESTAMP NOT NULL,
     time_delivered TIMESTAMP,
     food_id INT NOT NULL,
+    quantity INT NOT NULL,
     FOREIGN KEY (merchant_id) REFERENCES users(id),
     FOREIGN KEY (client_id) REFERENCES users(id),
     FOREIGN KEY (food_id) REFERENCES foods(id)
