@@ -2,7 +2,7 @@ CREATE TABLE Users (
     id SERIAL PRIMARY KEY, 
     name VARCHAR(100), 
     email VARCHAR(100), 
-    password VARCHAR(100), 
+    password_hash VARCHAR(100), 
     is_active BOOLEAN, 
     last_time_active TIMESTAMP, 
     phone VARCHAR(100), 
