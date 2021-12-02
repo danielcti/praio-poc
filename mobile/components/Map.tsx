@@ -2,9 +2,7 @@ import * as React from "react";
 import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { User } from "../types/User";
-import { Food } from "../types/Food";
 import { useUser } from "../hooks/user";
-import { useFood } from "../hooks/food";
 
 interface MapProps {
   location: any;
@@ -12,7 +10,6 @@ interface MapProps {
 }
 
 export default function Map({ location, users }: MapProps) {
-  const { foodListQuery } = useFood();
   const { userSession } = useUser();
   return (
     <MapView
@@ -50,14 +47,6 @@ export default function Map({ location, users }: MapProps) {
               longitude: Number(user.longitude),
             }}
             title={user.name}
-            description={
-              foodListQuery?.data
-                ? foodListQuery?.data
-                    .filter((food) => food.merchant_id === user.id)
-                    .map((food) => food.name)
-                    .join(", ")
-                : undefined
-            }
           ></Marker>
         ))}
     </MapView>
