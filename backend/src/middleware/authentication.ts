@@ -12,7 +12,7 @@ export default async function VerifyJWT(request: Request, response: Response, ne
         if (err)
             return response.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        request.body.id = user.id;
+        request.body.user_id = user.id;
         request.body.is_client = user.is_client;
 
         next();
