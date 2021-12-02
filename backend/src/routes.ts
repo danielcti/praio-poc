@@ -20,6 +20,6 @@ routes.post("/add-food", VerifyJWT, FoodController.add);
 routes.get("/food/:id", FoodController.get);
 routes.delete("/food/:id", VerifyJWT, FoodController.delete);
 routes.get("/merchant-foods/:id", FoodController.getMerchantFoods);
-routes.put("/food", VerifyJWT, FoodController.update);
+routes.put("/food", VerifyJWT ,FoodController.update);
 
 export default routes;
