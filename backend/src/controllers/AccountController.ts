@@ -54,7 +54,7 @@ class AccountController {
     }
 
     async testLogin(request: Request, response: Response) {
-        return response.status(200).send({id: request.body.id, is_client: request.body.is_client});
+        return response.status(200).send({id: request.body.user_id, is_client: request.body.is_client});
     }
 }
 
