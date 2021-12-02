@@ -10,7 +10,7 @@ class OrderRepository {
         try {
             const user_id_key = is_merchant ? 'merchant_id' : 'client_id'
             const query = await client.query(
-                `SELECT * FROM ORDERS WHERE ${user_id_key} = ${user_id}`
+                `SELECT * FROM ORDERS WHERE ${user_id_key} = ${user_id};`
             );
 
             const orders = <Order[]>query.rows;
@@ -27,7 +27,7 @@ class OrderRepository {
         try {
             const user_id_key = is_merchant ? 'merchant_id' : 'client_id'
             const query = await client.query(
-                `SELECT * FROM ORDERS WHERE ${user_id_key} = ${user_id} AND status = '${status}'`
+                `SELECT * FROM ORDERS WHERE ${user_id_key} = ${user_id} AND status = '${status}';`
             );
 
             return query.rows
@@ -65,7 +65,7 @@ class OrderRepository {
             const merchant = await UserRepository.FindUserById(order.merchant_id|| -1)
             const food = await FoodRepository.FindFoodById(order.food_id || -1) 
 
-            if (!buyer || !merchant || !food) { return undefined }
+            if (!buyer || !merchant || !food) return undefined;
 
             const query = await client.query(`INSERT INTO ORDERS(merchant_id,client_id,food_id,status,total_price,payment_method,time_ordered)\
                 VALUES('${order.merchant_id}','${order.client_id}','${order.food_id}','open','${(food.price || 0)*(order.quantity || 0)}','${order.payment_method}','${(new Date()).toUTCString()}') RETURNING *;`)
