@@ -21,18 +21,17 @@ class OrderController {
         const { client_id, merchant_id, status } = request.body
         let orders = undefined
 
-        if(Number(client_id)) {
-            if(status) {
-                orders = await OrderRepository.FindOrdersByStatusFromId(Number(client_id), false, status)
-            } else {
-                orders = await OrderRepository.FindOrdersByClientId(Number(client_id))
-            }
+        const user_id = Number(client_id) ? Number(client_id) : Number(merchant_id)
+        const is_merchant = (client_id == undefined) && (merchant_id != undefined)
 
-        } else if(Number(merchant_id)) {
+        console.log(user_id)
+        console.log(is_merchant)
+
+        if(user_id) {
             if(status) {
-                orders = await OrderRepository.FindOrdersByStatusFromId(Number(merchant_id), true, status)
+                orders = await OrderRepository.FindOrdersByStatusFromId(user_id, is_merchant, status)
             } else {
-                orders = await OrderRepository.FindOrdersByMerchantId(Number(client_id))
+                orders = await OrderRepository.FindOrdersByUserId(user_id, is_merchant)
             }
         } 
 

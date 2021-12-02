@@ -44,26 +44,11 @@ class OrderRepository {
         return undefined;
     }
 
-    async FindOrdersByClientId(client_id: number): Promise<Order[] | undefined> {
+    async FindOrdersByUserId(user_id: number, is_merchant: boolean): Promise<Order[] | undefined> {
         try {
+            const user_id_key = is_merchant ? 'merchant_id' : 'client_id'
             const query = await client.query(
-                `SELECT * FROM ORDERS WHERE client_id = ${client_id}`
-            );
-
-            const orders = <Order[]>query.rows;
-
-            return orders;
-        } catch (err) {
-            console.log((err as Error).message)
-            console.log((err as Error).stack)
-        }
-        return undefined;
-    }
-
-    async FindOrdersByMerchantId(merchant_id: number): Promise<Order[] | undefined> {
-        try {
-            const query = await client.query(
-                `SELECT * FROM ORDERS WHERE merchant_id = ${merchant_id}`
+                `SELECT * FROM ORDERS WHERE ${user_id_key} = ${user_id}`
             );
 
             const orders = <Order[]>query.rows;
