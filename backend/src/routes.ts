@@ -14,7 +14,12 @@ routes.get("/user", UserController.index);
 routes.put("/user", UserController.update);
 routes.get("/user/:id", UserController.show);
 routes.delete("/user/:id", UserController.delete);
+
 routes.post("/order/create", OrderController.create);
+routes.put("/order/accept", OrderController.accept);
+routes.put("/order/cancel", OrderController.cancel);
+routes.put("/order/finish", OrderController.finish);
+routes.get("/order/list", OrderController.list);
 
 routes.get("/account/testLogin", VerifyJWT, AccountController.testLogin);
 

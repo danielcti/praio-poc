@@ -3,7 +3,7 @@ export class Order {
     merchant_id:number | undefined; //required
     client_id:number | undefined; //required
     food_id:number | undefined; //required
-    status:string | undefined;
+    status:string | undefined; // open | ongoing | finished | canceled
     total_price:number | undefined;
     payment_method:number | undefined;
     time_ordered:Date | undefined;

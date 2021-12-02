@@ -6,10 +6,29 @@ import FoodRepository from "../repositories/FoodRepository";
 
 class OrderRepository {
 
+    async FindAll(): Promise<Order[] | undefined> {
+
+        try {
+            const query = await client.query(
+                `SELECT * FROM ORDERS`
+            );
+
+            return query.rows
+
+        } catch (err) {
+            console.log((err as Error).message)
+            console.log((err as Error).stack)
+        }
+
+        return undefined;
+    }
+
     async FindOrderById(id: number): Promise<Order | undefined> {
 
         try {
-            const query = await client.query(`SELECT * FROM ORDERS WHERE id = ${id}`);
+            const query = await client.query(
+                `SELECT * FROM ORDERS WHERE id = ${id}`
+            );
 
             if (query.rows.length == 0) {
                 return undefined;
@@ -27,7 +46,9 @@ class OrderRepository {
 
     async FindOrdersByClientId(client_id: number): Promise<Order[] | undefined> {
         try {
-            const query = await client.query(`SELECT * FROM ORDERS WHERE client_id = '${client_id}'`);
+            const query = await client.query(
+                `SELECT * FROM ORDERS WHERE client_id = ${client_id}`
+            );
 
             const orders = <Order[]>query.rows;
 
@@ -41,11 +62,49 @@ class OrderRepository {
 
     async FindOrdersByMerchantId(merchant_id: number): Promise<Order[] | undefined> {
         try {
-            const query = await client.query(`SELECT * FROM ORDERS WHERE merchant_id = '${merchant_id}'`);
+            const query = await client.query(
+                `SELECT * FROM ORDERS WHERE merchant_id = ${merchant_id}`
+            );
 
             const orders = <Order[]>query.rows;
 
             return orders;
+        } catch (err) {
+            console.log((err as Error).message)
+            console.log((err as Error).stack)
+        }
+        return undefined;
+    }
+
+    async FindOrdersByStatusFromId(user_id: number, is_merchant: boolean, status: string): Promise<Order[] | undefined> {
+        try {
+            const user_id_key = is_merchant ? 'merchant_id' : 'client_id'
+            const query = await client.query(
+                `SELECT * FROM ORDERS WHERE ${user_id_key} = ${user_id} AND status = '${status}'`
+            );
+
+            return query.rows
+
+        } catch (err) {
+            console.log((err as Error).message)
+            console.log((err as Error).stack)
+        }
+        return undefined;
+    }
+
+    async SetOrderStatus(id: number, status: string): Promise<Order | undefined> {
+        try {
+            let params = `status = '${status}'`
+            if(status == 'finished') {
+                params = `(status,time_delivered) = ('${status}','${(new Date()).toUTCString()}')`
+            }
+            
+            const query = await client.query(
+                `UPDATE orders SET ${params} WHERE id = ${id} RETURNING *;`
+            );
+
+            return query.rows[0]
+
         } catch (err) {
             console.log((err as Error).message)
             console.log((err as Error).stack)
