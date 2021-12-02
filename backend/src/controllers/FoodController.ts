@@ -48,7 +48,9 @@ class FoodController {
             return response.status(401).send({ error: "user cannot delete this food"})
         }
 
-        if (!await FoodRepository.Delete(Number(id))) {
+        const foodWasDeleted = await FoodRepository.Delete(Number(id));
+
+        if (!foodWasDeleted) {
             return response.status(500).send({ error: `Unable to delete food with id = ${id}`})
         }
         return response.status(200).send({sucess: "Food was deleted" });
@@ -75,12 +77,12 @@ class FoodController {
             return response.status(400).send({ error: "Request was incomplete" });
         }
 
-        const newFood = FoodRepository.Update(food);
+        const newFood = await FoodRepository.Update(food);
 
         if (!newFood) {
-            return response.status(500).send({ error: `Unable to delete food with id = ${food.id}`})
+            return response.status(500).send({ error: `Unable to update food with id = ${food.id}`})
         } else {
-            return response.status(200).send({food});
+            return response.status(200).send({newFood});
         }
     }
 }

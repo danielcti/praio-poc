@@ -13,8 +13,8 @@ class FoodRepository
         {
             console.log((err as Error).message)
             console.log((err as Error).stack)
+            return -1;
         }
-        return -1;
     }
 
     async FindFoodById(id:number): Promise<Food | undefined > {
@@ -24,8 +24,8 @@ class FoodRepository
         } catch(err) {
             console.log((err as Error).message)
             console.log((err as Error).stack)
+            return undefined;
         }
-        return undefined;
     }
 
     async Delete(id:number): Promise<boolean> {
@@ -35,8 +35,8 @@ class FoodRepository
         } catch(err) {
             console.log((err as Error).message)
             console.log((err as Error).stack)
-        }
-        return false;
+            return false;
+        }        
     }
 
     async FindFoodsByMerchantId(id:number): Promise<Food[] >{
@@ -46,8 +46,8 @@ class FoodRepository
         } catch(err) {
             console.log((err as Error).message)
             console.log((err as Error).stack)
+            return [];
         }
-        return [];
     }
 
     async Update(food:Food): Promise<Food | undefined >{
@@ -63,8 +63,8 @@ class FoodRepository
         } catch (err) {
             console.log((err as Error).message)
             console.log((err as Error).stack)
+            return undefined;
         }
-        return undefined;
     }
 }
 
