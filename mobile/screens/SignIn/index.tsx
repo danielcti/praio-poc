@@ -13,13 +13,12 @@ import {
 import { Link, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { LoginStackParamList } from "../../navigation/PublicRoutes/LoginRoutes";
-import { useApplication } from "../../hooks/application";
+import { useUser } from "../../hooks/user";
 
 type signInScreenProp = StackNavigationProp<LoginStackParamList, "SignIn">;
 
 export default function SignIn() {
-  const { loginUserFormik, loginUserMutation, setUserSession } =
-    useApplication();
+  const { loginUserFormik, loginUserMutation, setUserSession } = useUser();
   const navigation = useNavigation<signInScreenProp>();
 
   const handleLogin = async () => {

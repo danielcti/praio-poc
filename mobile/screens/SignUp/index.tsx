@@ -15,13 +15,13 @@ import {
 } from "react-native";
 
 import { LoginStackParamList } from "../../navigation/PublicRoutes/LoginRoutes";
-import { useApplication } from "../../hooks/application";
+import { useUser } from "../../hooks/user";
 
 type signUpScreenProp = StackNavigationProp<LoginStackParamList, "SignUp">;
 
 export default function SignUp() {
   const navigation = useNavigation<signUpScreenProp>();
-  const { createUserFormik } = useApplication();
+  const { createUserFormik } = useUser();
 
   const handleUserTypeChange = (userType: string) => {
     if (userType === "client") {

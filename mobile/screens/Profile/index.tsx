@@ -1,12 +1,20 @@
 import * as React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useApplication } from "../../hooks/application";
+import { useUser } from "../../hooks/user";
 
 export default function Profile() {
-  const { userSession } = useApplication();
+  const { userSession, setUserSession } = useUser();
+
+  const handleLogOut = () => {
+    setUserSession(undefined);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{userSession?.user?.name}</Text>
+      <TouchableOpacity onPress={handleLogOut}>
+        <Text>Deslogar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
