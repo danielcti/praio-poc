@@ -6,44 +6,6 @@ import FoodRepository from "../repositories/FoodRepository";
 
 class OrderRepository {
 
-    async FindAll(): Promise<Order[] | undefined> {
-
-        try {
-            const query = await client.query(
-                `SELECT * FROM ORDERS`
-            );
-
-            return query.rows
-
-        } catch (err) {
-            console.log((err as Error).message)
-            console.log((err as Error).stack)
-        }
-
-        return undefined;
-    }
-
-    async FindOrderById(id: number): Promise<Order | undefined> {
-
-        try {
-            const query = await client.query(
-                `SELECT * FROM ORDERS WHERE id = ${id}`
-            );
-
-            if (query.rows.length == 0) {
-                return undefined;
-            }
-            else {
-                return <Order>query.rows[0];
-            }
-        } catch (err) {
-            console.log((err as Error).message)
-            console.log((err as Error).stack)
-        }
-
-        return undefined;
-    }
-
     async FindOrdersByUserId(user_id: number, is_merchant: boolean): Promise<Order[] | undefined> {
         try {
             const user_id_key = is_merchant ? 'merchant_id' : 'client_id'
