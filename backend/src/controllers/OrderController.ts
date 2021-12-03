@@ -11,6 +11,7 @@ class OrderController {
 
         const createdOrder = await OrderRepository.CreateOrder(order)
         if (createdOrder) {
+            io.emit("order", createdOrder);
             return response.status(200).send({ success: "Order created", order: createdOrder });
         } else {
             return response.status(500).send({ error: "Something went wrong" });
@@ -23,9 +24,6 @@ class OrderController {
 
         const user_id = Number(client_id) ? Number(client_id) : Number(merchant_id)
         const is_merchant = (client_id == undefined) && (merchant_id != undefined)
-
-        console.log(user_id)
-        console.log(is_merchant)
 
         if(user_id) {
             if(status) {
@@ -64,6 +62,7 @@ class OrderController {
 
         const order = await OrderRepository.SetOrderStatus(order_id, status)
         if (order) {
+            io.emit("order", order);
             return response.status(200).send({ success: "Order status is now " + status, order: order });
         } else {
             return response.status(500).send({ error: "Something went wrong" });
