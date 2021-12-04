@@ -1,19 +1,23 @@
 import * as React from "react";
 import MapView, { Callout, Marker } from "react-native-maps";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { User } from "../types/User";
 import { useUser } from "../hooks/user";
 import { useFood } from "../hooks/food";
 import { useNavigation } from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { MainStackParamList } from "../navigation/PrivateRoutes/MainRoutes";
 
 interface MapProps {
   users: User[];
 }
 
+type mapComponentProp = StackNavigationProp<MainStackParamList, "MapView">;
+
 export default function Map({ users }: MapProps) {
   const { userSession, location } = useUser();
   const { foodListQuery } = useFood();
-  const navigation = useNavigation();
+  const navigation = useNavigation<mapComponentProp>();
 
   return (
     <MapView

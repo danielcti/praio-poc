@@ -1,7 +1,9 @@
 import { useNavigation } from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 import { Image, Text, View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { MainStackParamList } from "../navigation/PrivateRoutes/MainRoutes";
 import { Food } from "../types/Food";
 import { formatMoney } from "../utils/format";
 
@@ -9,8 +11,10 @@ interface FoodProps {
   food: Food | undefined;
 }
 
+type foodComponentProp = StackNavigationProp<MainStackParamList, "FoodPage">;
+
 export default function FoodComponent({ food }: FoodProps) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<foodComponentProp>();
   if (!food) return <></>;
 
   return (

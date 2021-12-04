@@ -5,14 +5,27 @@ import Main from "../../screens/Main";
 import MerchantProfile from "../../screens/MerchantProfile";
 import FoodPage from "../../screens/FoodPage";
 
-const Stack = createStackNavigator();
+export type MainStackParamList = {
+  MapView: undefined;
+  MerchantProfile: {
+    merchant_id: number;
+    merchant_name: string;
+    merchant_lat: number;
+    merchant_lng: number;
+  };
+  FoodPage: {
+    food_id: number;
+  };
+};
+
+const Stack = createStackNavigator<MainStackParamList>();
 
 const MainRoutes = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
         options={{ headerShown: false }}
-        name="Principal Página"
+        name="MapView"
         component={Main}
       />
       <Stack.Screen
