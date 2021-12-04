@@ -3,6 +3,7 @@ import UserController from "./controllers/UserController";
 import AccountController from "./controllers/AccountController";
 import FoodController from "./controllers/FoodController";
 import OrderController from "./controllers/OrderController";
+import RatingController from "./controllers/RatingController";
 import VerifyJWT from "./middleware/authentication";
 
 const routes = Router();
@@ -29,5 +30,8 @@ routes.delete("/food/:id", VerifyJWT, FoodController.delete);
 routes.get("/merchant-foods/:id", FoodController.getMerchantFoods);
 routes.put("/food", VerifyJWT, FoodController.update);
 routes.get("/food", VerifyJWT, FoodController.list);
+
+routes.post("/rating/new", RatingController.create)
+routes.get("/rating", RatingController.getStars)
 
 export default routes;
