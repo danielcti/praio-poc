@@ -190,13 +190,7 @@ const UserProvider = ({ children }: any) => {
       });
 
       socket.on("order", (order: Order) => {
-        const client = userListQuery?.data?.find(
-          (user) => user.id === order.client_id
-        );
-        Alert.alert(
-          "Novo pedido!",
-          `${client?.name} acabou de fazer um pedido.`
-        );
+        Alert.alert("Novo pedido!");
       });
     }
   };
