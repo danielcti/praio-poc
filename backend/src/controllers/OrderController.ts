@@ -10,8 +10,11 @@ class OrderController {
         const order: Order = request.body;
 
         const createdOrder = await OrderRepository.CreateOrder(order)
+        const {rows} = await client.query(
+            `SELECT * FROM users WHERE id = ${createdOrder?.merchant_id};`
+          );
         if (createdOrder) {
-            io.emit("order", createdOrder);
+            io.to(rows[0].socket_id).emit("order", createdOrder);
             return response.status(200).send({ success: "Order created", order: createdOrder });
         } else {
             return response.status(500).send({ error: "Something went wrong" });

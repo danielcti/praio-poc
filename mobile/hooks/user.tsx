@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import * as yup from "yup";
 import api from "../services/api";
 import { FormikProps, useFormik } from "formik";
@@ -17,7 +17,10 @@ import {
 } from "react-query";
 import { AxiosError } from "axios";
 import * as Location from "expo-location";
-import { USER_LIST_QUERY } from "../constants/constants";
+import { API_URL, USER_LIST_QUERY } from "../constants/constants";
+import io from "socket.io-client";
+import { Alert } from "react-native";
+import { Order } from "../types/Order";
 
 interface UserContextData {
   userSession: Authentication | undefined;
@@ -172,6 +175,35 @@ const UserProvider = ({ children }: any) => {
       });
     })();
   }, [Location]);
+
+  const registerSocket = () => {
+    if (userSession?.auth) {
+      const socket = io(API_URL, {
+        transports: ["websocket"],
+      });
+
+      socket.on("connect", () => {
+        api.post("user/socket", {
+          socketId: socket.id,
+          userId: userSession?.user.id,
+        });
+      });
+
+      socket.on("order", (order: Order) => {
+        const client = userListQuery?.data?.find(
+          (user) => user.id === order.client_id
+        );
+        Alert.alert(
+          "Novo pedido!",
+          `${client?.name} acabou de fazer um pedido.`
+        );
+      });
+    }
+  };
+
+  useEffect(() => {
+    registerSocket();
+  }, [userSession]);
 
   return (
     <UserContext.Provider

@@ -57,6 +57,7 @@ export default function Map({ users }: MapProps) {
           >
             <Callout
               onPress={() =>
+                user.is_merchant &&
                 navigation.navigate("MerchantProfile", {
                   merchant_id: user.id,
                   merchant_name: user.name,
