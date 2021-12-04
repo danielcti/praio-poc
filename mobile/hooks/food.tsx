@@ -15,7 +15,6 @@ const FoodContext = createContext<FoodContextData>({} as FoodContextData);
 const FoodProvider = ({ children }: any) => {
   const { userSession } = useUser();
   const fetchFoodList = async (): Promise<Food[]> => {
-    console.log(userSession);
     const { data } = await api.get("/food", {
       headers: {
         authorization: `Bearer ${userSession?.token}`,

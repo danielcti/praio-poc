@@ -7,6 +7,7 @@ import {
   CreateUserForm,
   LoginUserForm,
   User,
+  UserLocation,
 } from "../types/User";
 import {
   useMutation,
@@ -15,6 +16,7 @@ import {
   UseQueryResult,
 } from "react-query";
 import { AxiosError } from "axios";
+import * as Location from "expo-location";
 import { USER_LIST_QUERY } from "../constants/constants";
 
 interface UserContextData {
@@ -35,6 +37,7 @@ interface UserContextData {
     unknown
   >;
   userListQuery: UseQueryResult<User[], AxiosError>;
+  location: UserLocation;
 }
 
 const UserContext = createContext<UserContextData>({} as UserContextData);
@@ -42,6 +45,9 @@ const UserContext = createContext<UserContextData>({} as UserContextData);
 const UserProvider = ({ children }: any) => {
   const [userSession, setUserSession] = useState<Authentication | undefined>(
     undefined
+  );
+  const [location, setLocation] = React.useState<UserLocation>(
+    {} as UserLocation
   );
 
   const createUserValidationSchema = yup.object({
@@ -152,6 +158,21 @@ const UserProvider = ({ children }: any) => {
     }
   );
 
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+    })();
+  }, [Location]);
+
   return (
     <UserContext.Provider
       value={{
@@ -162,6 +183,7 @@ const UserProvider = ({ children }: any) => {
         loginUserFormik,
         loginUserMutation,
         userListQuery,
+        location,
       }}
     >
       {children}

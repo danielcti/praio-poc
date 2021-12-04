@@ -7,12 +7,11 @@ import { useFood } from "../hooks/food";
 import { useNavigation } from "@react-navigation/core";
 
 interface MapProps {
-  location: any;
   users: User[];
 }
 
-export default function Map({ location, users }: MapProps) {
-  const { userSession } = useUser();
+export default function Map({ users }: MapProps) {
+  const { userSession, location } = useUser();
   const { foodListQuery } = useFood();
   const navigation = useNavigation();
 
@@ -20,17 +19,17 @@ export default function Map({ location, users }: MapProps) {
     <MapView
       style={styles.container}
       initialRegion={{
-        latitude: location?.coords?.latitude || -8.0990952,
-        longitude: location?.coords?.longitude || -34.8828124,
+        latitude: location?.latitude || -8.0990952,
+        longitude: location?.longitude || -34.8828124,
         latitudeDelta: 0.04,
         longitudeDelta: 0.05,
       }}
     >
-      {location?.coords && (
+      {location?.latitude && (
         <Marker
           coordinate={{
-            latitude: Number(location.coords.latitude),
-            longitude: Number(location.coords.longitude),
+            latitude: location.latitude,
+            longitude: location.longitude,
           }}
           title="Eu"
           pinColor={"blue"}
@@ -57,6 +56,8 @@ export default function Map({ location, users }: MapProps) {
                 navigation.navigate("MerchantProfile", {
                   merchant_id: user.id,
                   merchant_name: user.name,
+                  merchant_lat: user.latitude,
+                  merchant_lng: user.longitude,
                 })
               }
             >

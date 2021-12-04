@@ -15,6 +15,7 @@ import FoodComponent from "../../components/FoodComponent";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useOrder } from "../../hooks/order";
 import { useUser } from "../../hooks/user";
+import { Ionicons } from "@expo/vector-icons";
 
 interface Params {
   food_id: number;
@@ -49,18 +50,41 @@ export default function FoodPage() {
     }
   };
 
+  const updateQuantity = (incrementValue: number) => {
+    const quantity = createOrderFormik.values.quantity;
+    createOrderFormik.setFieldValue("quantity", quantity + incrementValue);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <FoodComponent food={myFood} />
-      <Text style={styles.inputLabel}>Quantidade</Text>
-      <TextInput
-        style={styles.inputField}
-        value={String(createOrderFormik.values.quantity)}
-        onChangeText={createOrderFormik.handleChange("quantity")}
-        autoCorrect={false}
-        keyboardType="numeric"
-      />
-      <Text style={styles.errorText}>{createOrderFormik.errors.quantity}</Text>
+      <View style={styles.inputContainer}>
+        <Text style={styles.inputLabel}>Adicionar quantidade</Text>
+        <View style={styles.inputFieldContainer}>
+          <TouchableOpacity
+            style={styles.quantityButton}
+            onPress={() => updateQuantity(-1)}
+          >
+            <Ionicons name="remove-circle" size={20} color="#2550A3" />
+          </TouchableOpacity>
+          <TextInput
+            style={styles.inputField}
+            value={String(createOrderFormik.values.quantity)}
+            onChangeText={createOrderFormik.handleChange("quantity")}
+            autoCorrect={false}
+            keyboardType="numeric"
+          />
+          <TouchableOpacity
+            style={styles.quantityButton}
+            onPress={() => updateQuantity(1)}
+          >
+            <Ionicons name="add-circle" size={20} color="#2550A3" />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.errorText}>
+          {createOrderFormik.errors.quantity}
+        </Text>
+      </View>
       <TouchableOpacity onPress={handleSubmit} style={styles.orderButton}>
         <Text style={styles.orderButtonText}>Fazer pedido</Text>
       </TouchableOpacity>
@@ -85,17 +109,29 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
   },
+  inputContainer: {
+    marginTop: 30,
+  },
+  inputFieldContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   inputLabel: {
-    color: "#999",
+    color: "#1C2239",
     fontSize: 14,
     marginBottom: 5,
   },
   inputField: {
     backgroundColor: "#F2F7FF",
     borderRadius: 8,
-    padding: 15,
+    padding: 10,
+    width: 50,
+    textAlign: "center",
   },
   errorText: {
     color: "red",
+  },
+  quantityButton: {
+    padding: 10,
   },
 });

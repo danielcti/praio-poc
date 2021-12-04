@@ -4,15 +4,20 @@ import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFood } from "../../hooks/food";
 import FoodComponent from "../../components/FoodComponent";
+import { measure } from "../../utils/userHelper";
+import { useUser } from "../../hooks/user";
 
 interface Params {
   merchant_id: number;
   merchant_name: string;
+  merchant_lat: number;
+  merchant_lng: number;
 }
 
 export default function MerchantProfile() {
   const route = useRoute();
   const { foodListQuery } = useFood();
+  const { location } = useUser();
   const routeParams = route.params as Params;
   const merchantFoods = foodListQuery?.data?.filter(
     (food) => food?.merchant_id === routeParams?.merchant_id
@@ -30,12 +35,19 @@ export default function MerchantProfile() {
             <Text style={styles.merchantName}>
               {routeParams?.merchant_name}
             </Text>
-            <Text>300m</Text>
+            <Text>
+              {measure(
+                routeParams.merchant_lat,
+                routeParams.merchant_lng,
+                location.latitude,
+                location.longitude
+              )}
+            </Text>
           </View>
         </View>
         <View style={styles.paymentsMethods}>
           <Text style={styles.paymentsMethodsTitle}>Pagamento na entrega</Text>
-          <Text>Dinheiro, pix, crédito e débito.</Text>
+          {/* <Text>Dinheiro, pix, crédito e débito.</Text> */}
         </View>
         <View style={styles.foodsContainer}>
           {merchantFoods?.map((food) => (
