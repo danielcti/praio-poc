@@ -85,6 +85,14 @@ class FoodController {
             return response.status(200).send({newFood});
         }
     }
+
+    async list(request: Request, response: Response) {
+      const foods = await FoodRepository.FindAll();
+      if (foods) {
+        return response.status(200).send(foods);
+      }
+      return response.status(500);
+    }
 }
 
 export default new FoodController();
