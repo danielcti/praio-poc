@@ -52,7 +52,10 @@ export default function FoodPage() {
 
   const updateQuantity = (incrementValue: number) => {
     const quantity = createOrderFormik.values.quantity;
-    createOrderFormik.setFieldValue("quantity", quantity + incrementValue);
+    createOrderFormik.setFieldValue(
+      "quantity",
+      Number(quantity) + Number(incrementValue)
+    );
   };
 
   return (
