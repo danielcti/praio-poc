@@ -1,8 +1,10 @@
 import * as React from "react";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Callout, Marker } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { User } from "../types/User";
 import { useUser } from "../hooks/user";
+import { useFood } from "../hooks/food";
+import { useNavigation } from "@react-navigation/core";
 
 interface MapProps {
   location: any;
@@ -11,6 +13,9 @@ interface MapProps {
 
 export default function Map({ location, users }: MapProps) {
   const { userSession } = useUser();
+  const { foodListQuery } = useFood();
+  const navigation = useNavigation();
+
   return (
     <MapView
       style={styles.container}
@@ -46,8 +51,26 @@ export default function Map({ location, users }: MapProps) {
               latitude: Number(user.latitude),
               longitude: Number(user.longitude),
             }}
-            title={user.name}
-          ></Marker>
+          >
+            <Callout
+              onPress={() =>
+                navigation.navigate("MerchantProfile", {
+                  merchant_id: user.id,
+                  merchant_name: user.name,
+                })
+              }
+            >
+              <Text>{user.name}</Text>
+              <Text>
+                {foodListQuery?.data
+                  ? foodListQuery?.data
+                      .filter((food) => food.merchant_id === user.id)
+                      .map((food) => food.name)
+                      .join(", ")
+                  : undefined}
+              </Text>
+            </Callout>
+          </Marker>
         ))}
     </MapView>
   );

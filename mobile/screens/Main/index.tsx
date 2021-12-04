@@ -6,16 +6,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { User } from "../../types/User";
 import { useUser } from "../../hooks/user";
+import { useFood } from "../../hooks/food";
+import { filterUsers } from "../../utils/userHelper";
 
 export default function Main() {
   const [location, setLocation] = React.useState<any>(undefined);
   const [inputText, setInputText] = React.useState("");
   const { userSession, userListQuery } = useUser();
-  const [filteredUsers, setFilteresUsers] = React.useState<User[]>([]);
+  const { foodListQuery } = useFood();
+  const [filteredUsers, setFilteredUsers] = React.useState<User[]>([]);
 
   React.useEffect(() => {
     if (userListQuery?.data) {
-      setFilteresUsers(userListQuery.data);
+      setFilteredUsers(userListQuery.data);
     }
   }, [userListQuery]);
 
@@ -32,11 +35,13 @@ export default function Main() {
   }, [Location]);
 
   React.useEffect(() => {
-    if (userListQuery?.data) {
-      const filtered = userListQuery?.data.filter((user) =>
-        user.name.toLowerCase().includes(inputText.toLowerCase())
+    if (userListQuery?.data && foodListQuery?.data) {
+      const filtered = filterUsers(
+        userListQuery?.data,
+        foodListQuery?.data,
+        inputText
       );
-      setFilteresUsers(filtered);
+      setFilteredUsers(filtered);
     }
   }, [inputText]);
 
