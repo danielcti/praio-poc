@@ -31,3 +31,8 @@ export interface Authentication {
   token: string;
   user: User;
 }
+
+export interface UserLocation {
+  latitude: number;
+  longitude: number;
+}

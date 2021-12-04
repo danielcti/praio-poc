@@ -66,6 +66,21 @@ class FoodRepository
             return undefined;
         }
     }
+
+    async FindAll(): Promise<Food[] | undefined> {
+        try {
+            const query = await client.query(
+                `SELECT * FROM FOODS;`
+            );
+
+            return query.rows
+        } catch (err) {
+            console.log((err as Error).message);
+            console.log((err as Error).stack);
+            return undefined;
+        }
+    }
+
 }
 
 export default new FoodRepository()
