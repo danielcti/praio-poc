@@ -20,7 +20,7 @@ routes.post("/order/create", OrderController.create);
 routes.put("/order/accept", OrderController.accept);
 routes.put("/order/cancel", OrderController.cancel);
 routes.put("/order/finish", OrderController.finish);
-routes.get("/order/list", OrderController.list);
+routes.post("/order/list", OrderController.list);
 
 routes.get("/account/testLogin", VerifyJWT, AccountController.testLogin);
 
@@ -31,7 +31,7 @@ routes.get("/merchant-foods/:id", FoodController.getMerchantFoods);
 routes.put("/food", VerifyJWT, FoodController.update);
 routes.get("/food", VerifyJWT, FoodController.list);
 
-routes.post("/rating/new", RatingController.create)
-routes.get("/rating", RatingController.getStars)
+routes.post("/rating/new", RatingController.create);
+routes.get("/rating", RatingController.getStars);
 
 export default routes;

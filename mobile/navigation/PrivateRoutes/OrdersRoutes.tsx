@@ -8,7 +8,14 @@ const Stack = createStackNavigator();
 const OrdersRoutes = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Pedidos Página" component={Orders} />
+      <Stack.Screen
+        options={{
+          headerTitle: "Histórico de pedidos",
+          headerTitleAlign: "center",
+        }}
+        name="OrdersPage"
+        component={Orders}
+      />
     </Stack.Navigator>
   );
 };

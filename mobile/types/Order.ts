@@ -18,3 +18,19 @@ export interface CreateOrderForm {
   payment_method: number;
   quantity: number;
 }
+
+export interface UserOrder {
+  merchant_name: string;
+  client_name: string;
+  food_name: string;
+  total_price: number;
+  status: OrderStatus;
+  quantity: number;
+}
+
+export enum OrderStatus {
+  open = "open",
+  ongoing = "ongoing",
+  finished = "finished",
+  canceled = "canceled",
+}
