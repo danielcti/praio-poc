@@ -25,6 +25,7 @@ class OrderController {
         const user_id = Number(client_id) ? Number(client_id) : Number(merchant_id)
         const is_merchant = (client_id == undefined) && (merchant_id != undefined)
 
+
         if(user_id) {
             if(status) {
                 orders = await OrderRepository.FindOrdersByStatusFromId(user_id, is_merchant, status)
@@ -34,7 +35,7 @@ class OrderController {
         } 
 
         if (orders) {
-            return response.status(200).send({ orders: orders });
+            return response.status(200).send(orders);
         } else {
             return response.status(500).send({ error: "Something went wrong" });
         }

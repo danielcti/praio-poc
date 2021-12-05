@@ -2,9 +2,16 @@ import React, { createContext, useContext, useState } from "react";
 import * as yup from "yup";
 import api from "../services/api";
 import { FormikProps, useFormik } from "formik";
-import { CreateOrderForm, Order } from "../types/Order";
-import { useMutation, UseMutationResult } from "react-query";
+import { CreateOrderForm, Order, UserOrder } from "../types/Order";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from "react-query";
 import { AxiosError } from "axios";
+import { ORDER_LIST_QUERY } from "../constants/constants";
+import { useUser } from "./user";
 
 interface OrderContextData {
   createOrderFormik: FormikProps<CreateOrderForm>;
@@ -14,11 +21,14 @@ interface OrderContextData {
     CreateOrderForm,
     unknown
   >;
+  orderListQuery: UseQueryResult<UserOrder[], AxiosError>;
 }
 
 const OrderContext = createContext<OrderContextData>({} as OrderContextData);
 
 const OrderProvider = ({ children }: any) => {
+  const { userSession } = useUser();
+
   const createOrderValidationSchema = yup.object({
     client_id: yup.number().required(),
     merchant_id: yup.number().required(),
@@ -70,11 +80,34 @@ const OrderProvider = ({ children }: any) => {
     retry: false,
   });
 
+  const fetchOrderList = async (): Promise<UserOrder[]> => {
+    const { data } = await api.post("/order/list", {
+      client_id: userSession?.user?.is_client
+        ? userSession?.user.id
+        : undefined,
+      merchant_id: userSession?.user?.is_merchant
+        ? userSession?.user.id
+        : undefined,
+    });
+    return data;
+  };
+
+  const orderListQuery = useQuery<UserOrder[], AxiosError>(
+    [ORDER_LIST_QUERY, userSession?.auth],
+    fetchOrderList,
+    {
+      enabled: !!userSession?.token,
+      retry: false,
+      staleTime: 10000,
+    }
+  );
+
   return (
     <OrderContext.Provider
       value={{
         createOrderFormik,
         createOrderMutation,
+        orderListQuery,
       }}
     >
       {children}
