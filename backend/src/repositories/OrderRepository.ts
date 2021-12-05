@@ -1,4 +1,4 @@
-import { Order } from "../models/Order";
+import { Order, UserOrder } from "../models/Order";
 import { client } from "../index";
 
 import UserRepository from "../repositories/UserRepository";
@@ -8,7 +8,7 @@ class OrderRepository {
   async FindOrdersByUserId(
     user_id: number,
     is_merchant: boolean
-  ): Promise<Order[] | undefined> {
+  ): Promise<UserOrder[] | undefined> {
     try {
       const user_id_key = is_merchant ? "merchant_id" : "client_id";
       const query = await client.query(
@@ -23,7 +23,7 @@ class OrderRepository {
         WHERE ${user_id_key} = ${user_id};`
       );
 
-      const orders = <Order[]>query.rows;
+      const orders = <UserOrder[]>query.rows;
 
       return orders;
     } catch (err) {
