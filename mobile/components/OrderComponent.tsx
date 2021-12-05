@@ -6,9 +6,10 @@ import { getFormattedStatusName, getStatusColor } from "../utils/format";
 
 interface OrderProps {
   order: UserOrder | undefined;
+  isClient?: boolean;
 }
 
-export default function OrderComponent({ order }: OrderProps) {
+export default function OrderComponent({ order, isClient }: OrderProps) {
   if (!order) return <></>;
 
   return (
@@ -29,9 +30,12 @@ export default function OrderComponent({ order }: OrderProps) {
           source={{ uri: "https://via.placeholder.com/90" }}
         />
         <View style={styles.orderInfoContainer}>
-          <Text style={styles.orderName}>Comida: {order.food_name}</Text>
-          <Text style={styles.orderName}>Cliente: {order.client_name}</Text>
-          <Text style={styles.orderName}>Ambulante: {order.merchant_name}</Text>
+          <Text style={styles.foodName}>{order.food_name}</Text>
+          {isClient ? (
+            <Text style={styles.userName}>{order.merchant_name}</Text>
+          ) : (
+            <Text style={styles.userName}>{order.client_name}</Text>
+          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -59,8 +63,12 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     justifyContent: "space-between",
   },
-  orderName: {
+  userName: {
     fontSize: 18,
+  },
+  foodName: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
   orderPrice: {},
   orderStatus: {
