@@ -11,4 +11,5 @@ export class User {
   is_client: boolean | undefined;
   latitude: number | undefined;
   longitude: number | undefined;
+  socket_id: string | undefined;
 }

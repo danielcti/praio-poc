@@ -10,7 +10,8 @@ CREATE TABLE Users (
     is_merchant BOOLEAN,
     is_client BOOLEAN, 
     latitude DECIMAL,
-    longitude DECIMAL 
+    longitude DECIMAL,
+    socket_id VARCHAR(100)
 );
 
 CREATE TABLE Foods (
