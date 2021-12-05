@@ -15,6 +15,7 @@ routes.get("/user", UserController.index);
 routes.put("/user", UserController.update);
 routes.get("/user/:id", UserController.show);
 routes.delete("/user/:id", UserController.delete);
+routes.post("/user/socket", UserController.updateUserSocketId);
 
 routes.post("/order/create", OrderController.create);
 routes.put("/order/accept", OrderController.accept);

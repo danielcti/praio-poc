@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import { StatusBar } from "expo-status-bar";
 import React from "react";

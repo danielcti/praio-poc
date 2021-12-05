@@ -57,6 +57,18 @@ class UserController {
 
     return response.status(204).send();
   }
+
+  async updateUserSocketId(request: Request, response: Response) {
+    const { socketId, userId } = request.body;
+
+    if (!socketId || !userId)
+      return response.status(400).json({ error: "Invalid fields" });
+
+    await client.query(
+      `UPDATE USERS SET socket_id = '${socketId}' WHERE id = ${userId}`
+    );
+    return response.status(200);
+  }
 }
 
 export default new UserController();

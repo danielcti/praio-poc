@@ -38,6 +38,7 @@
     "react-native-screens": "~3.8.0",
     "react-native-web": "0.17.1",
     "react-query": "^3.33.7",
+    "socket.io-client": "^4.4.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
