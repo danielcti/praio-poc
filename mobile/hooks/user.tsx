@@ -17,10 +17,15 @@ import {
 } from "react-query";
 import { AxiosError } from "axios";
 import * as Location from "expo-location";
-import { API_URL, USER_LIST_QUERY } from "../constants/constants";
+import {
+  API_URL,
+  UPDATE_USER_COORD_QUERY,
+  USER_LIST_QUERY,
+} from "../constants/constants";
 import io from "socket.io-client";
 import { Alert } from "react-native";
 import { Order } from "../types/Order";
+import { shouldUpdateCoords } from "../utils/userHelper";
 
 interface UserContextData {
   userSession: Authentication | undefined;
@@ -158,6 +163,30 @@ const UserProvider = ({ children }: any) => {
       enabled: userSession?.auth,
       retry: false,
       staleTime: 10000,
+    }
+  );
+
+  const updateUserCoord = async (): Promise<User> => {
+    const { data } = await api.post("/user/coords", {
+      id: userSession?.user.id,
+      latitude: location?.latitude,
+      longitude: location?.longitude,
+    });
+    return data;
+  };
+
+  const updateUserCoordQuery = useQuery<User, AxiosError>(
+    [UPDATE_USER_COORD_QUERY, userSession, location],
+    updateUserCoord,
+    {
+      enabled:
+        !!userSession?.auth &&
+        shouldUpdateCoords(
+          userSession?.user?.latitude,
+          userSession?.user?.longitude,
+          location?.latitude,
+          location?.longitude
+        ),
     }
   );
 

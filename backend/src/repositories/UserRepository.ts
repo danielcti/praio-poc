@@ -1,6 +1,5 @@
 import { User } from "../models/User";
 import { client } from "../index";
-import { query } from "express";
 
 class UserRepository {
   async FindAll(): Promise<User[]> {
@@ -68,6 +67,39 @@ class UserRepository {
       console.log((err as Error).stack);
     }
     return false;
+  }
+
+  async UpdateUserCoords(
+    id: number,
+    latitude: number,
+    longitude: number
+  ): Promise<User | undefined> {
+    try {
+      const query = await client.query(
+        `UPDATE users SET (latitude, longitude) = (${latitude}, ${longitude}) WHERE id = ${id} RETURNING *;`
+      );
+      return query.rows[0];
+    } catch (err) {
+      console.log((err as Error).message);
+      console.log((err as Error).stack);
+      return undefined;
+    }
+  }
+
+  async UpdateUserSocketId(
+    socketId: string,
+    userId: number
+  ): Promise<User | undefined> {
+    try {
+      const query = await client.query(
+        `UPDATE USERS SET socket_id = '${socketId}' WHERE id = ${userId} RETURNING *;`
+      );
+      return query.rows[0];
+    } catch (err) {
+      console.log((err as Error).message);
+      console.log((err as Error).stack);
+      return undefined;
+    }
   }
 }
 

@@ -1,61 +1,28 @@
 import { Request, Response } from "express";
-import { client, io } from "../index";
+import UserRepository from "../repositories/UserRepository";
 
 class UserController {
   async index(request: Request, response: Response) {
-    const users = await client.query("SELECT * FROM users;");
-
-    return response.json(users.rows);
+    const users = await UserRepository.FindAll();
+    if (users) {
+      return response.status(200).send(users);
+    }
+    return response.status(500);
   }
 
-  async store(request: Request, response: Response) {
-    const { name, latitude, longitude } = request.body;
-    if (!name || !latitude || !longitude)
+  async updateUserCoords(request: Request, response: Response) {
+    const { id, latitude, longitude } = request.body;
+    if (!id || !latitude || !longitude)
       return response.status(400).json({ error: "Invalid fields" });
 
-    const query = await client.query(
-      `INSERT INTO users (name, latitude, longitude) VALUES ('${name}', ${latitude}, ${longitude}) RETURNING *;`
+    const updatedUser = await UserRepository.UpdateUserCoords(
+      id,
+      latitude,
+      longitude
     );
+    if (updatedUser) return response.status(200).send(updatedUser);
 
-    const users = await client.query("SELECT * FROM users;");
-    io.emit("users", users.rows);
-
-    return response.status(200).send(query.rows[0]);
-  }
-
-  async update(request: Request, response: Response) {
-    const { id, name, latitude, longitude } = request.body;
-    if (!id || !name || !latitude || !longitude)
-      return response.status(400).json({ error: "Invalid fields" });
-
-    const query = await client.query(
-      `UPDATE users SET (name, latitude, longitude) = ('${name}', ${latitude}, ${longitude}) WHERE user_id = ${id} RETURNING *;`
-    );
-
-    const users = await client.query("SELECT * FROM users;");
-    io.emit("users", users.rows);
-
-    return response.status(200).send(query.rows[0]);
-  }
-
-  async show(request: Request, response: Response) {
-    const { id } = request.params;
-    if (!id) return response.status(400).json({ error: "Invalid fields" });
-
-    const users = await client.query(
-      `SELECT * FROM users WHERE user_id = ${id};`
-    );
-
-    return response.json(users.rows);
-  }
-
-  async delete(request: Request, response: Response) {
-    const { id } = request.params;
-    if (!id) return response.status(400).json({ error: "Invalid fields" });
-
-    await client.query(`DELETE FROM users WHERE user_id = ${id};`);
-
-    return response.status(204).send();
+    return response.status(500);
   }
 
   async updateUserSocketId(request: Request, response: Response) {
@@ -64,10 +31,13 @@ class UserController {
     if (!socketId || !userId)
       return response.status(400).json({ error: "Invalid fields" });
 
-    await client.query(
-      `UPDATE USERS SET socket_id = '${socketId}' WHERE id = ${userId}`
+    const updatedUser = await UserRepository.UpdateUserSocketId(
+      socketId,
+      userId
     );
-    return response.status(200);
+    if (updatedUser) return response.status(200);
+
+    return response.status(500);
   }
 }
 

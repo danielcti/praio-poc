@@ -22,6 +22,12 @@ export default function MerchantProfile() {
   const merchantFoods = foodListQuery?.data?.filter(
     (food) => food?.merchant_id === routeParams?.merchant_id
   );
+  const distance = measure(
+    routeParams.merchant_lat,
+    routeParams.merchant_lng,
+    location.latitude,
+    location.longitude
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -35,14 +41,7 @@ export default function MerchantProfile() {
             <Text style={styles.merchantName}>
               {routeParams?.merchant_name}
             </Text>
-            <Text>
-              {measure(
-                routeParams.merchant_lat,
-                routeParams.merchant_lng,
-                location.latitude,
-                location.longitude
-              )}
-            </Text>
+            <Text>{distance !== undefined && `${distance}m`}</Text>
           </View>
         </View>
         <View style={styles.paymentsMethods}>

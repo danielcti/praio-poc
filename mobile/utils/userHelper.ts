@@ -24,7 +24,7 @@ export const measure = (
   lon1: number,
   lat2: number,
   lon2: number
-): string | undefined => {
+): number | undefined => {
   if (!lat1 || !lon1 || !lat2 || !lon2) return undefined;
   // generally used geo measurement function
   const R = 6378.137; // Radius of earth in KM
@@ -38,6 +38,27 @@ export const measure = (
       Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = R * c;
-  return (d * 1000).toFixed(0) + "m"; // meters
+  return Number((d * 1000).toFixed(0)); // meters
   // return d.toFixed(2); // kilometers
+};
+
+export const shouldUpdateCoords = (
+  userLat?: number,
+  userLng?: number,
+  currentUserLat?: number,
+  currentUserLng?: number
+): boolean => {
+  if (!userLat || !userLng) return true; // user dont have coords in DB
+
+  if (!currentUserLat || !currentUserLng) return false; // user dont have actual coords
+
+  const distance = measure(userLat, userLng, currentUserLat, currentUserLng);
+  if (!distance) return false;
+
+  if (Math.abs(distance) > 50) {
+    // user is at least 50m from the last distance stored
+    return true;
+  } else {
+    return false;
+  }
 };

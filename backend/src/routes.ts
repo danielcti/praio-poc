@@ -10,11 +10,8 @@ const routes = Router();
 
 routes.post("/account/register", AccountController.register);
 routes.post("/account/login", AccountController.login);
-routes.post("/user", UserController.store);
 routes.get("/user", UserController.index);
-routes.put("/user", UserController.update);
-routes.get("/user/:id", UserController.show);
-routes.delete("/user/:id", UserController.delete);
+routes.post("/user/coords", UserController.updateUserCoords);
 routes.post("/user/socket", UserController.updateUserSocketId);
 
 routes.post("/order/create", OrderController.create);

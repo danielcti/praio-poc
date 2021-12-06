@@ -20,7 +20,7 @@ class OrderRepository {
             ON O.merchant_id = U.id
         INNER JOIN USERS U2
             ON O.client_id = U2.id
-        WHERE ${user_id_key} = ${user_id};`
+        WHERE O.${user_id_key} = ${user_id};`
       );
 
       const orders = <UserOrder[]>query.rows;
