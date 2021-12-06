@@ -1,3 +1,6 @@
+import {Food} from './Food'
+import {User} from './User'
+
 export class Order {
   id: number | undefined;
   merchant_id: number | undefined; //required
@@ -9,6 +12,9 @@ export class Order {
   time_ordered: Date | undefined;
   time_delivered: Date | undefined;
   quantity: number | undefined; //required
+  client: User | undefined;
+  merchant: User | undefined;
+  food: Food | undefined;
 }
 
 export interface UserOrder {
