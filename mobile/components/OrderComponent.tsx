@@ -1,7 +1,10 @@
+import { useNavigation } from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 import { Image, Text, View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { UserOrder } from "../types/Order";
+import { OrderStackParamList } from "../navigation/PrivateRoutes/OrdersRoutes";
+import { OrderStatus, UserOrder } from "../types/Order";
 import { getFormattedStatusName, getStatusColor } from "../utils/format";
 
 interface OrderProps {
@@ -9,11 +12,22 @@ interface OrderProps {
   isClient?: boolean;
 }
 
+type orderComponentProp = StackNavigationProp<OrderStackParamList, "OrderPage">;
+
 export default function OrderComponent({ order, isClient }: OrderProps) {
+  const navigation = useNavigation<orderComponentProp>();
+
   if (!order) return <></>;
 
   return (
-    <TouchableOpacity style={styles.orderContainer} onPress={() => {}}>
+    <TouchableOpacity
+      style={styles.orderContainer}
+      onPress={() =>
+        navigation.navigate("OrderPage", {
+          order_id: order.id,
+        })
+      }
+    >
       <View
         style={[
           styles.orderStatus,
@@ -35,6 +49,13 @@ export default function OrderComponent({ order, isClient }: OrderProps) {
             <Text style={styles.userName}>{order.merchant_name}</Text>
           ) : (
             <Text style={styles.userName}>{order.client_name}</Text>
+          )}
+          {(order?.status === OrderStatus.open ||
+            order?.status === OrderStatus.ongoing) && (
+            <Text>Solicitado em: {order.time_ordered}</Text>
+          )}
+          {order?.status === OrderStatus.finished && (
+            <Text>Finalizado em: {order.time_delivered}</Text>
           )}
         </View>
       </View>

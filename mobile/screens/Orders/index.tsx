@@ -1,3 +1,4 @@
+import { useRoute } from "@react-navigation/core";
 import * as React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,10 +9,21 @@ import { useUser } from "../../hooks/user";
 export default function Orders() {
   const { orderListQuery } = useOrder();
   const { userSession } = useUser();
+  const { params } = useRoute();
+  const ref = React.useRef();
+
+  React.useEffect(() => {
+    if (params?.scrollTop) {
+      ref.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+    }
+  }, [orderListQuery]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView keyboardShouldPersistTaps="always">
+      <ScrollView keyboardShouldPersistTaps="always" ref={ref}>
         {orderListQuery?.data?.map((order, idx) => (
           <OrderComponent
             key={idx}
