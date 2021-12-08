@@ -146,7 +146,6 @@ const OrderProvider = ({ children }: any) => {
     status,
     listener_id,
   }: UpdateOrderStatusForm) => {
-    console.log(id, status);
     const { data } = await api.put<Order>(
       `/order/${status}?id=${id}&listener_id=${listener_id}`
     );
