@@ -12,7 +12,7 @@ class OrderRepository {
     try {
       const user_id_key = is_merchant ? "merchant_id" : "client_id";
       const query = await client.query(
-        `SELECT O.id, U.name AS merchant_name, U2.name as client_name ,F.name as food_name, total_price, status, quantity
+        `SELECT O.* ,U.name AS merchant_name, U2.name as client_name ,F.name as food_name, total_price, status, quantity
         FROM ORDERS O
         INNER JOIN FOODS F
             ON O.food_id = F.id
@@ -20,7 +20,8 @@ class OrderRepository {
             ON O.merchant_id = U.id
         INNER JOIN USERS U2
             ON O.client_id = U2.id
-        WHERE O.${user_id_key} = ${user_id};`
+        WHERE O.${user_id_key} = ${user_id}
+        ORDER BY O.time_ordered DESC;`
       );
 
       const orders = <UserOrder[]>query.rows;
