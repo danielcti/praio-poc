@@ -1,3 +1,5 @@
+import { User } from './User';
+
 export class Food {
     id: number | undefined;
     name: string | undefined;
@@ -7,4 +9,5 @@ export class Food {
     avaliable_quantity: number | undefined;
     category: string | undefined;
     merchant_id: number | undefined;
+    merchant: User | undefined;
 }

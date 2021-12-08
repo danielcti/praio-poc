@@ -19,7 +19,7 @@ class FoodController {
 
         food.merchant_id = request.body.user_id;
 
-        const food_id = await FoodRepository.Add(food)
+        const food_id = await FoodRepository.Add(food);
 
         if (food_id >= 0) 
         {

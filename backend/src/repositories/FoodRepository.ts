@@ -19,7 +19,8 @@ class FoodRepository
 
     async FindFoodById(id:number): Promise<Food | undefined > {
         try {
-            const query = await client.query(`SELECT * FROM FOODS WHERE id = ${id}`)
+            const query = await client.query(`SELECT * FROM FOODS WHERE id = ${id}`);
+            query.rows[0].merchant = (await client.query(`SELECT * FROM USERS WHERE id = ${query.rows[0].merchant_id}`)).rows[0];
             return query.rows[0];
         } catch(err) {
             console.log((err as Error).message)
@@ -42,6 +43,8 @@ class FoodRepository
     async FindFoodsByMerchantId(id:number): Promise<Food[] >{
         try {
             const query = await client.query(`SELECT * FROM FOODS WHERE merchant_id = ${id}`)
+            const merchant = (await client.query(`SELECT * FROM USERS WHERE id = ${id}`)).rows[0];
+            query.rows.forEach( f => f.merchant = merchant);
             return query.rows;
         } catch(err) {
             console.log((err as Error).message)
@@ -70,10 +73,11 @@ class FoodRepository
     async FindAll(): Promise<Food[] | undefined> {
         try {
             const query = await client.query(
-                `SELECT * FROM FOODS;`
+                `SELECT f.*, m.name as merchant_name FROM FOODS f\
+                INNER JOIN users m on f.merchant_id = m.id;`
             );
 
-            return query.rows
+            return query.rows;
         } catch (err) {
             console.log((err as Error).message);
             console.log((err as Error).stack);
