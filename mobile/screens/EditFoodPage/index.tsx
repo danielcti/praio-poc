@@ -18,9 +18,8 @@ interface Params {
 }
 
 export default function EditFoodPage() {
-  const { userSession } = useUser();
   const route = useRoute();
-  const { foodListQuery, updateFoodMutation, updateFoodFormik } = useFood();
+  const { foodListQuery, updateFoodFormik } = useFood();
   const routeParams = route.params as Params;
   const myFood = foodListQuery?.data?.find(
     (food) => food.id === routeParams?.food_id
@@ -100,11 +99,13 @@ export default function EditFoodPage() {
             </Text>
           </View>
           <TouchableOpacity
-            style={styles.addProductButton}
+            style={styles.updateProductButton}
             onPress={() => handleSubmit()}
             disabled={!updateFoodFormik.dirty}
           >
-            <Text style={styles.addProductButtonText}>Adicionar produto</Text>
+            <Text style={styles.updateProductButtonText}>
+              Atualizar produto
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -137,35 +138,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
   },
-  userTypeButtonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-  userTypeButton: {
-    borderRadius: 20,
-    borderColor: "#2550A3",
-    borderWidth: 2,
-    padding: 15,
-    flex: 1,
-  },
-  userTypeButtonActive: {
-    backgroundColor: "#F2F7FF",
-  },
-  userTypeButtonFirstChild: {
-    marginRight: 20,
-  },
-  userTypeButtonText: {
-    color: "#2550A3",
-    textAlign: "center",
-  },
-  addProductButton: {
+  updateProductButton: {
     borderRadius: 20,
     backgroundColor: "#2550A3",
     padding: 15,
     marginTop: 30,
   },
-  addProductButtonText: {
+  updateProductButtonText: {
     color: "#fff",
     textAlign: "center",
   },

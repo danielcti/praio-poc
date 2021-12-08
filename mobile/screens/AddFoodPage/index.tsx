@@ -10,11 +10,9 @@ import {
   ScrollView,
 } from "react-native";
 import { useFood } from "../../hooks/food";
-import { useUser } from "../../hooks/user";
 
 export default function AddFoodPage() {
-  const { userSession } = useUser();
-  const { foodListQuery, createFoodMutation, createFoodFormik } = useFood();
+  const { createFoodFormik } = useFood();
 
   const handleSubmit = async () => {
     if (!createFoodFormik.isValid) {
@@ -115,28 +113,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#F2F7FF",
     borderRadius: 8,
     padding: 15,
-  },
-  userTypeButtonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-  userTypeButton: {
-    borderRadius: 20,
-    borderColor: "#2550A3",
-    borderWidth: 2,
-    padding: 15,
-    flex: 1,
-  },
-  userTypeButtonActive: {
-    backgroundColor: "#F2F7FF",
-  },
-  userTypeButtonFirstChild: {
-    marginRight: 20,
-  },
-  userTypeButtonText: {
-    color: "#2550A3",
-    textAlign: "center",
   },
   addProductButton: {
     borderRadius: 20,

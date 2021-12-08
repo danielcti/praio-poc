@@ -1,25 +1,17 @@
 import * as React from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useUser } from "../../hooks/user";
 import MainInfo from "./components/MainInfo";
 import ProductsSection from "./components/ProductsSection";
 
 export default function Profile() {
-  const { userSession, setUserSession } = useUser();
-
+  const { userSession } = useUser();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView keyboardShouldPersistTaps="always">
         <MainInfo />
-        <ProductsSection />
+        {userSession?.user?.is_merchant && <ProductsSection />}
       </ScrollView>
     </SafeAreaView>
   );

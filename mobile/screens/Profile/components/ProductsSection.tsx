@@ -1,14 +1,13 @@
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 import React from "react";
-import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import FoodComponent from "../../../components/FoodComponent";
 import { useFood } from "../../../hooks/food";
 import { useUser } from "../../../hooks/user";
 
 export default function ProductsSection() {
   const navigation = useNavigation();
-  const { userSession, setUserSession } = useUser();
+  const { userSession } = useUser();
   const { foodListQuery } = useFood();
   const myFoods = foodListQuery?.data?.filter(
     (food) => food.merchant_id === userSession?.user?.id
@@ -24,8 +23,8 @@ export default function ProductsSection() {
       </View>
 
       <View style={styles.productsList}>
-        {myFoods?.map((food) => (
-          <FoodComponent food={food} nextUrl="EditFoodPage" />
+        {myFoods?.map((food, idx) => (
+          <FoodComponent key={idx} food={food} nextUrl="EditFoodPage" />
         ))}
       </View>
     </View>
