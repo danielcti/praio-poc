@@ -1,4 +1,4 @@
-import { useRoute } from "@react-navigation/core";
+import { useNavigation, useRoute } from "@react-navigation/core";
 import * as React from "react";
 import {
   Image,
@@ -22,6 +22,8 @@ interface Params {
 }
 
 export default function FoodPage() {
+  const navigation = useNavigation();
+
   const { userSession } = useUser();
   const { createOrderFormik, createOrderMutation } = useOrder();
   const route = useRoute();
@@ -45,6 +47,7 @@ export default function FoodPage() {
       });
       await createOrderFormik.submitForm();
       ToastAndroid.show("Pedido criado com sucesso!", ToastAndroid.LONG);
+      navigation.navigate("OrdersPage", { scrollTop: true });
     } catch (err) {
       ToastAndroid.show("Houve algum erro.", ToastAndroid.LONG);
     }

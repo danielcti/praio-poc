@@ -26,6 +26,11 @@ export interface UserOrder {
   total_price: number;
   status: OrderStatus;
   quantity: number;
+  id: number;
+  merchant_id: number;
+  client_id: number;
+  time_ordered: string;
+  time_delivered: string;
 }
 
 export enum OrderStatus {

@@ -13,12 +13,14 @@ import {
   useMutation,
   UseMutationResult,
   useQuery,
+  useQueryClient,
   UseQueryResult,
 } from "react-query";
 import { AxiosError } from "axios";
 import * as Location from "expo-location";
 import {
   API_URL,
+  ORDER_LIST_QUERY,
   UPDATE_USER_COORD_QUERY,
   USER_LIST_QUERY,
 } from "../constants/constants";
@@ -51,6 +53,7 @@ interface UserContextData {
 const UserContext = createContext<UserContextData>({} as UserContextData);
 
 const UserProvider = ({ children }: any) => {
+  const clientQuery = useQueryClient();
   const [userSession, setUserSession] = useState<Authentication | undefined>(
     undefined
   );
@@ -218,8 +221,14 @@ const UserProvider = ({ children }: any) => {
         });
       });
 
-      socket.on("order", (order: Order) => {
+      socket.on("new_order", (order: Order) => {
         Alert.alert("Novo pedido!");
+        clientQuery.invalidateQueries(ORDER_LIST_QUERY);
+      });
+
+      socket.on("updated_order", (order: Order) => {
+        Alert.alert("Pedido atualizado!");
+        clientQuery.invalidateQueries(ORDER_LIST_QUERY);
       });
     }
   };

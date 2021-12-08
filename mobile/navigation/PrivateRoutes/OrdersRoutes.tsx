@@ -2,8 +2,16 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Orders from "../../screens/Orders";
+import OrderPage from "../../screens/OrderPage";
 
-const Stack = createStackNavigator();
+export type OrderStackParamList = {
+  OrdersPage: undefined;
+  OrderPage: {
+    order_id: number;
+  };
+};
+
+const Stack = createStackNavigator<OrderStackParamList>();
 
 const OrdersRoutes = () => {
   return (
@@ -15,6 +23,11 @@ const OrdersRoutes = () => {
         }}
         name="OrdersPage"
         component={Orders}
+      />
+      <Stack.Screen
+        options={{ headerTitle: "" }}
+        name="OrderPage"
+        component={OrderPage}
       />
     </Stack.Navigator>
   );
