@@ -78,7 +78,7 @@ const UserProvider = ({ children }: any) => {
       is_client: false,
     },
     validationSchema: createUserValidationSchema,
-    onSubmit: async () => {
+    onSubmit: async (_, { resetForm }) => {
       await createUserMutation.mutateAsync({
         name,
         email: createUserEmail,
@@ -86,6 +86,7 @@ const UserProvider = ({ children }: any) => {
         is_client,
         is_merchant,
       });
+      resetForm();
     },
   });
 
@@ -125,11 +126,12 @@ const UserProvider = ({ children }: any) => {
       password: "",
     },
     validationSchema: loginUserValidationSchema,
-    onSubmit: async () => {
+    onSubmit: async (_, { resetForm }) => {
       await loginUserMutation.mutateAsync({
         email: loginUserEmail,
         password: loginUserPassword,
       });
+      resetForm();
     },
   });
 

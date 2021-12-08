@@ -50,7 +50,7 @@ export default function MerchantProfile() {
         </View>
         <View style={styles.foodsContainer}>
           {merchantFoods?.map((food) => (
-            <FoodComponent key={food.id} food={food} />
+            <FoodComponent key={food.id} food={food} nextUrl="FoodPage" />
           ))}
         </View>
       </ScrollView>
