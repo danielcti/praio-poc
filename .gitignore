@@ -118,5 +118,6 @@ web-build/
 .DS_Store
 
 package-lock.json
-yarn.lock
+backend/yarn.lock
+mobile/yarn.lock
 build
