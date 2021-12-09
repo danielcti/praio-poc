@@ -9,22 +9,22 @@ import { formatMoney } from "../utils/format";
 
 interface FoodProps {
   food: Food | undefined;
+  nextUrl?: string;
 }
 
-type foodComponentProp = StackNavigationProp<MainStackParamList, "FoodPage">;
-
-export default function FoodComponent({ food }: FoodProps) {
-  const navigation = useNavigation<foodComponentProp>();
+export default function FoodComponent({ food, nextUrl }: FoodProps) {
+  const navigation = useNavigation();
   if (!food) return <></>;
 
   return (
     <TouchableOpacity
       style={styles.foodContainer}
       onPress={() =>
-        navigation.navigate("FoodPage", {
+        navigation.navigate(nextUrl, {
           food_id: food.id,
         })
       }
+      disabled={!nextUrl}
     >
       <Image
         style={styles.foodImage}

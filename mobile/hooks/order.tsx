@@ -67,7 +67,7 @@ const OrderProvider = ({ children }: any) => {
       quantity: 1,
     },
     validationSchema: createOrderValidationSchema,
-    onSubmit: async () => {
+    onSubmit: async (_, { resetForm }) => {
       await createOrderMutation.mutateAsync({
         client_id,
         food_id,
@@ -75,6 +75,7 @@ const OrderProvider = ({ children }: any) => {
         payment_method,
         quantity,
       });
+      resetForm();
     },
   });
 
