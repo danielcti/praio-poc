@@ -28,6 +28,7 @@ import io from "socket.io-client";
 import { Alert } from "react-native";
 import { Order } from "../types/Order";
 import { shouldUpdateCoords } from "../utils/userHelper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface UserContextData {
   userSession: Authentication | undefined;
@@ -238,6 +239,26 @@ const UserProvider = ({ children }: any) => {
   useEffect(() => {
     registerSocket();
   }, [userSession]);
+
+  useEffect(() => {
+    async function setUserStorage() {
+      if (userSession) {
+        const jsonUserSession = JSON.stringify(userSession);
+        await AsyncStorage.setItem("userSession", jsonUserSession);
+      }
+    }
+    setUserStorage();
+  }, [userSession]);
+
+  useEffect(() => {
+    async function fetchUserSession() {
+      const userSession = await AsyncStorage.getItem("userSession");
+      if (userSession) {
+        setUserSession(JSON.parse(userSession));
+      }
+    }
+    fetchUserSession();
+  }, []);
 
   return (
     <UserContext.Provider

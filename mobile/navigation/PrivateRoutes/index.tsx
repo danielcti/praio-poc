@@ -12,7 +12,6 @@ const Routes = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Perfil"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
