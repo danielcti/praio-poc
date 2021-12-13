@@ -2,12 +2,14 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
 import { useUser } from "../../../hooks/user";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function MainInfo() {
   const { userSession, setUserSession } = useUser();
 
   const handleLogOut = () => {
     setUserSession(undefined);
+    AsyncStorage.removeItem("userSession");
   };
 
   return (
