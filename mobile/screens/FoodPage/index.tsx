@@ -47,7 +47,7 @@ export default function FoodPage() {
       });
       await createOrderFormik.submitForm();
       ToastAndroid.show("Pedido criado com sucesso!", ToastAndroid.LONG);
-      navigation.navigate("OrdersPage", { scrollTop: true });
+      navigation.navigate("Pedidos", { screen: "OrdersPage", scrollTop: true });
     } catch (err) {
       ToastAndroid.show("Houve algum erro.", ToastAndroid.LONG);
     }
